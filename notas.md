@@ -61,6 +61,8 @@ hours-per-week   0.885072   9.528654e-91  NO es normal (Rechazar H0)
 ## 4. Decidir que tratamiento darle a valores faltantes.
 
 Conteo de valores faltantes (NaN) por columna:
+
+--------------------------------------------------------------------------------
 age                  0
 workclass         1836
 fnlwgt               0
@@ -77,6 +79,7 @@ hours-per-week       0
 native-country     583
 income               0
 dtype: int64
+--------------------------------------------------------------------------------
 
 
 totalWorkclass = 1836
@@ -109,3 +112,35 @@ K-means no puede trabajar con valores nulos.
 
 ### ¿Qué limitación supone ignorar las variables categóricas?
 Ignorar las variables categóricas supone perderse de patrones que podrían determinar los grupos.
+
+# 2. El script debe contener una implementación de la Distancia de Gower
+
+## 1. Implementar la fórmula de Gower.
+## 2. Validar con un subconjunto pequeño (ej. 5 filas).
+## 3. Probar el cálculo de la matriz de distancias en una muestra pequeña del dataset.
+
+## Preguntas guía:
+### ¿Cómo se normalizan las variables numéricas antes de calcular la distancia?
+Las variables numéricas se normalizan al calcular las distancias parciales.
+Con la fórmula abs(columna1Registro1 - columna1Registro2) / Rango.
+Por lo tanto, no es necesario normalizar los valores.
+
+### ¿Por qué Gower es más adecuado que la distancia euclídeana en datos mixtos?
+Es más adecuado en datos mixtos porque utiliza las variables categóricas y variables categóricas.
+
+Si la columna es numérica:
+- distanciaParcial = abs(columna1Registro1 - columna1Registro2) / Rango.
+
+Si la columna es categórica:
+- distanciaParcial = 1 si columna1Registro1 != columna1Registro2 sino 0.
+
+Luego permite compararlas a través de:
+- D_gower(registro1, registro2) = suma de distanciasParciales / cantidad de columnas
+
+### ¿Qué problemas aparecen al calcular matrices de distancias muy grandes (de conjuntos de datos muy grandes)?
+Con valores como por ejemplo: 32000 registros. Como en el caso del dataset(Adult)
+
+- La matriz necesitaría 32.000*32.000 = 1.024.000.000 (más de mil millones) de elementos.
+- Si cada distancia requiere 8 bytes, la matriz necesitaría aproximadamente 8GB de ram. Sólo para almacenarla.
+- Para calcular esta matriz, tienes que comparar cada par de registros. Esto implica una complejidad de tiempo de O(N^2).
+- Con N=32.000, el número de cálculos es inmenso, resultando en tiempos de ejecución muy largos.
