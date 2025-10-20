@@ -144,3 +144,45 @@ Con valores como por ejemplo: 32000 registros. Como en el caso del dataset(Adult
 - Si cada distancia requiere 8 bytes, la matriz necesitaría aproximadamente 8GB de ram. Sólo para almacenarla.
 - Para calcular esta matriz, tienes que comparar cada par de registros. Esto implica una complejidad de tiempo de O(N^2).
 - Con N=32.000, el número de cálculos es inmenso, resultando en tiempos de ejecución muy largos.
+
+# 3: El script debe dar tratamiento conjuntos de datos grandes
+## 1. Tomar muestras de 5.000 y 10.000 registros.
+## 2. Calcular la matriz de distancias Gower para cada muestra.
+## 3. Medir tiempo de ejecución y uso de memoria.
+## 4. Comparar estabilidad de clusters en muestras de distinto tamaño.
+## Preguntas guía:
+### ¿Qué diferencias observaste en tiempos de ejecución al aumentar el tamaño de la muestra?
+Al aumentar el tamaño de la muestra, el tiempo de ejecucuón y el tamaño de memoria utilizado es sumamente mayor.
+Con una muestra de 200 filas el tiempo de ejecución rondaba los 30 segundos con uso de memoria de 300KB.
+Con una muestra de 5000 filas el tiempo de ejecución rondaba 2 hora y 20 minutos, con uso de memoria de 0.186GB.
+Para terminar con una muestra de 10000 filas, utilizando un método paralelizado en 8 procesos, el tiempo de ejecución rondaba 2 horas y 41 minutos, con un uso de memoria de 0.745 GB.
+
+### ¿Qué trade-off o compromiso hay entre usar todo el dataset y usar una muestra más pequeña?
+Usar todo el dataset provee resultados más representativos y reales, incluye todas las observaciones y patrones. Incluso permite identificar outliers dentro de la muestra. 
+
+Pero acarrea el problema de ser pesada de calcular en tiempo y memoria, al ser el 
+algoritmo de O(n^2) en eficiencia de memoria y cálculo.
+
+Además el tiempo de procesamiento puede llevar horas o días.
+
+Usar una muestra permite que el cálculo sea más rápido y viable.
+Pero existe el riesgo de que la muestra no sea representativa de la población.
+Se puede perder información, los patrones raros o subpoblaciones pueden ser exluidos.
+
+### ¿Qué técnicas se podrían aplicar en problemas reales para escalar este análisis a millones de registros?
+
+1. Optimización del Cómputo (CPU/GPU)
+Estas técnicas se enfocan en hacer el cálculo de la distancia por par lo más rápido posible:
+- Vectorización Avanzada: Paquetes como gower en python utilizan c/c++.
+- Parelización a Nivel de procesos: Módulos como multiprocessing permite paralelizar.
+- Aceleración por hardware: Utilizar la GPU para el cálculo de matricez.
+
+2. Reducción de la Complejidad (Muestreo y Algoritmos)
+Estas técnicas evitan calcular la matriz NxN completa, reduciendo la complejidad efectiva:
+- Muestreo Estratégico: Se utiliza una muestra altamente representativa.
+- Algoritmos de Clustering Basados en Muestra: CLARA.
+- Técnicas de Clustering de Baja Dimensionalidad: PCA
+
+3. Computación Distribuida
+Para datasets que no caben en la memoria RAM de una sola máquina (terabytes de datos), se utilizan frameworks de Big Data:
+- Apache Spark: El cálculo de las distancias se distribuye a través del clúster de máquinas, y la matriz se ensambla de manera escalable.
