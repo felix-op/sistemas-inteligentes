@@ -186,3 +186,21 @@ Estas técnicas evitan calcular la matriz NxN completa, reduciendo la complejida
 3. Computación Distribuida
 Para datasets que no caben en la memoria RAM de una sola máquina (terabytes de datos), se utilizan frameworks de Big Data:
 - Apache Spark: El cálculo de las distancias se distribuye a través del clúster de máquinas, y la matriz se ensambla de manera escalable.
+
+# 4: El script debe realizar un agrupamiento o clustering con K-means
+## 1. Seleccionar las variables numéricas del dataset.
+## 2. Escalar si es necesario (normalizar)
+## 3. Aplicar K-means con distintos valores de k.
+## 4. Determinar el número óptimo de clusters (Silhouette y/o Davies-Bouldin).
+
+## Preguntas guía:
+### ¿Qué criterios usaste para definir el número de clusters?
+Utilice el índice de silhouette para determinar el número de clusters
+Además, también fue útil usar el Método del Codo (Elbow Method), basado en la innercia
+(SSE), se usó como un criterio visual.
+
+### ¿Qué patrones observaste en los clusters formados?
+
+
+
+### ¿Qué limitaciones tiene K-means al ignorar las variables categóricas?
